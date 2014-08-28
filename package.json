@@ -1,0 +1,24 @@
+{
+  "name": "bacon-viz",
+  "version": "0.0.0",
+  "description": "",
+  "main": " ",
+  "dependencies": {
+    "gulp": "~3.8.7",
+    "gulp-coffee": "~2.1.2",
+    "gulp-concat": "~2.3.4",
+    "gulp-sourcemaps": "~1.1.3",
+    "gulp-watch": "~0.6.9"
+  },
+  "devDependencies": {
+    "gulp-watch": "~0.6.9",
+    "gulp": "~3.8.7",
+    "gulp-concat": "~2.3.4",
+    "gulp-coffee": "~2.1.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause"
+}
