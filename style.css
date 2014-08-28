@@ -1,0 +1,16 @@
+svg {
+  font: 10px sans-serif;
+}
+ 
+#marbles .line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+ 
+#marbles .axis path,
+#marbles .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
