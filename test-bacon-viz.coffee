@@ -1,5 +1,5 @@
-BaconVis = window.BaconVis
-visualizer = BaconVis.createVisualizer()
+BaconViz = window.BaconViz
+visualizer = BaconViz.createVisualizer()
 
 trackClicks = ->
   $('body')

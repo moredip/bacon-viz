@@ -1,7 +1,7 @@
 global = this
 
 openPopup= ->
-  popup = window.open( '', 'Bacon-Vis', 'width=400,height=300' )
+  popup = window.open( '', 'Bacon-Viz', 'width=400,height=300' )
   return undefined unless popup?
 
   appendContent = (content)->
@@ -34,5 +34,5 @@ createVisualizer = ->
   }
 
 
-global.BaconVis ?= {}
-global.BaconVis.createVisualizer = createVisualizer
+global.BaconViz ?= {}
+global.BaconViz.createVisualizer = createVisualizer

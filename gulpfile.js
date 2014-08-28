@@ -8,7 +8,7 @@ gulp.task('coffee-lib', function () {
     .pipe(sourcemaps.init())
     .pipe(coffee())
     .pipe(sourcemaps.write())
-    .pipe(concat('bacon-vis.js'))
+    .pipe(concat('bacon-viz.js'))
     .pipe(gulp.dest('js'));
 });
 
