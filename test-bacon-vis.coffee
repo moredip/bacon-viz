@@ -10,73 +10,106 @@ trackClicks = ->
 
 
 d3Vis = ->
-  n = 40
-  random = d3.random.normal(0, .2)
-  data = d3.range(n).map(random)
- 
-  margin = {top: 20, right: 20, bottom: 20, left: 40}
-  width = 960 - margin.left - margin.right
-  height = 500 - margin.top - margin.bottom
- 
-  x = d3.scale.linear()
-      .domain([0, n - 1])
+  n = 243
+  duration = 750
+  now = new Date(Date.now() - duration)
+  #count = 0
+  #data = d3.range(n).map( -> 0 )
+  
+  data = [ Date.now() - (10*duration), Date.now() - (150*duration) ]
+
+  margin = {top: 6, right: 0, bottom: 20, left: 40}
+  width = 960 - margin.right
+  height = 120 - margin.top - margin.bottom
+
+  x = d3.time.scale()
+      .domain([now - (n - 2) * duration, now - duration])
       .range([0, width])
- 
+
   y = d3.scale.linear()
-      .domain([-1, 1])
       .range([height, 0])
-   
-  line = d3.svg.line()
-      .x( (d, i)-> x(i) )
-      .y( (d, i)-> y(d) ) 
-   
+
+  #line = d3.svg.line()
+      #.interpolate("basis")
+      #.x( (d, i)-> x(now - (n - 1 - i) * duration) )
+      #.y( (d, i)-> y(d) )
+
   svg = d3.select("svg#marbles")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
+      .style("margin-left", -margin.left + "px")
     .append("g")
-      .attr("transform", "translate(#{margin.left},#{margin.top})")
-   
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
   svg.append("defs").append("clipPath")
       .attr("id", "clip")
     .append("rect")
       .attr("width", width)
-      .attr("height", height)
-   
-  svg.append("g")
+      .attr("height", height);
+
+  axis = svg.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0,#{y(0)})")
-      .call(d3.svg.axis().scale(x).orient("bottom"))
-   
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(d3.svg.axis().scale(y).orient("left"))
-   
-  path = svg.append("g")
-      .attr("clip-path", "url(#clip)")
-    .append("path")
-      .datum(data)
-      .attr("class", "line")
-      .attr("d", line)
-   
+      .attr("transform", "translate(0," + height + ")")
+      .call(x.axis = d3.svg.axis().scale(x).orient("bottom"))
+
+  marbleGroup = svg.append("g")
+      #.attr("clip-path", "url(#clip)")
+    #.append("path")
+      #.data([data])
+      #.attr("class", "line")
+
+  #d3.select(window)
+    #.on("scroll", -> ++count )
+
   tick = ->
-   
-    # push a new data point onto the back
-    data.push(random())
-   
-    # redraw the line, and slide it to the left
-    path
-        .attr("d", line)
-        .attr("transform", null)
-      .transition()
-        .duration(500)
+    #// update the domains
+    now = new Date()
+    x.domain([now - (n - 2) * duration, now - duration])
+    #y.domain([0, d3.max(data)])
+
+    #// push the accumulated count onto the back, and reset the count
+    # data.push(Math.min(30, count))
+    # count = 0;
+
+    #// redraw the line
+    #svg.select(".line")
+        #.attr("d", line)
+        #.attr("transform", null);
+    
+    marbleGroup.attr("transform",null)
+
+    marbles = marbleGroup.selectAll(".marble")
+      .data(data)
+
+    marbles.enter().append("circle")
+      .attr("class","marble")
+      .attr("r", 20)
+    marbles.exit().remove()
+
+    marbles.attr("cx", (d)-> x(d) )
+        #.x( (d, i)-> x(now - (n - 1 - i) * duration) )
+        .attr("cy", y(0))
+
+    #// slide the x-axis left
+    axis.transition()
+        .duration(duration)
         .ease("linear")
-        .attr("transform", "translate(#{x(-1)},0)")
-        .each("end", tick);
-   
-    # pop the old data point off the front
-    data.shift()
-   
+        .call(x.axis)
+
+    #// slide the line left
+    marbleGroup.transition()
+        .duration(duration)
+        .ease("linear")
+        .attr("transform", "translate(" + x(now - (n - 1) * duration) + ")")
+        .each("end", tick)
+        
+    console.log("translate(" + x(now - (n - 1) * duration) + ")")
+
+    #// pop the old data point off the front
+    #data.shift()
+
   tick()
+
 
 #$(trackClicks)
 $(d3Vis)

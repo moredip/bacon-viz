@@ -20,7 +20,7 @@ gulp.task('coffee', function () {
   .pipe(gulp.dest('js'));
 });
 
-gulp.task('default', ['coffee-lib','coffee-example']);
+gulp.task('default', ['coffee-lib','coffee']);
 
 gulp.task('watch', function(){
   gulp.watch('./lib/*.coffee', ['coffee-lib']);
