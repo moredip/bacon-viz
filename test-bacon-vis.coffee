@@ -84,11 +84,12 @@ d3Vis = ->
     marbles.enter().append("circle")
       .attr("class","marble")
       .attr("r", 20)
+
     marbles.exit().remove()
 
-    marbles.attr("cx", (d)-> x(d) )
-        #.x( (d, i)-> x(now - (n - 1 - i) * duration) )
-        .attr("cy", y(0))
+    marbles
+      .attr("cx", (d)-> x(d) )
+      .attr("cy", y(0))
 
     #// slide the x-axis left
     axis.transition()

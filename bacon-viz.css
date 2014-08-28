@@ -7,6 +7,12 @@ svg {
   stroke: #000;
   stroke-width: 1.5px;
 }
+
+#marbles .marble {
+  fill: rgba(250, 112, 19, 0.73);
+  stroke: #F50D0D;
+  stroke-width: 4px;
+}
  
 #marbles .axis path,
 #marbles .axis line {
