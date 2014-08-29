@@ -1,13 +1,13 @@
 svg {
   font: 10px sans-serif;
 }
- 
-#marbles .line {
-  fill: none;
-  stroke: #000;
-  stroke-width: 1.5px;
-}
 
+#marbles .border {
+  fill: #f0f0f0;
+  stroke: #aaa;
+  stroke-width: 1px;
+}
+ 
 #marbles .marble {
   fill: rgba(250, 112, 19, 0.73);
   stroke: #F50D0D;
