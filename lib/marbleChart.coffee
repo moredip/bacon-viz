@@ -21,12 +21,12 @@ prepRootNode = (rootSvgNode)->
   marbleGroup = container.append("g")
   {root,marbleGroup}
 
-refreshMarbles = ({marbleGroup,data,x,height})->
+refreshMarbles = ({marbleGroup,eventData,x,height})->
   fade = x.copy().range([0,1])
 
   marbles = marbleGroup
     .selectAll(".marble")
-    .data(data)
+    .data(eventData)
 
   marbles.enter().append("circle")
     .attr("class","marble")
@@ -42,13 +42,13 @@ refreshMarbles = ({marbleGroup,data,x,height})->
 BaconViz.createMarbleChartWithin = (rootSvgNode)->
   updateInterval = 50
   timeRange = 1000 * 10 # 10 seconds
-  now = Date.now()
+  now = new Date()
 
   {marbleGroup,root} = prepRootNode(rootSvgNode)
   width = root.attr("width")
   height = root.attr("height")
   
-  data = [ now - 100, now - 400 ]
+  eventData = [ now - 100, now - 400 ]
 
   x = d3.time.scale()
       .domain([now - timeRange, now])
@@ -60,7 +60,7 @@ BaconViz.createMarbleChartWithin = (rootSvgNode)->
     now = new Date()
     x.domain([now - timeRange, now])
 
-    refreshMarbles({marbleGroup,data,x,height})
+    refreshMarbles({marbleGroup,eventData,x,height})
 
     # slide the x-axis left
     #axis.transition()
@@ -79,9 +79,10 @@ BaconViz.createMarbleChartWithin = (rootSvgNode)->
 
   tick()
 
-  updateData = (newData)->
-    data = newData
+  addNewMarble = ()->
+    eventTimestamp = new Date()
+    eventData.push(eventTimestamp)
     #tick()
 
-  {updateData}
+  {addNewMarble}
 

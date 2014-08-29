@@ -9,7 +9,7 @@ svg {
 }
  
 #marbles .marble {
-  fill: rgba(250, 112, 19, 0.73);
+  fill: rgb(250, 112, 19);
   stroke: #F50D0D;
   stroke-width: 4px;
 }

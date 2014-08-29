@@ -12,4 +12,10 @@ trackClicks = ->
 #$(d3Vis)
 
 $ ->
-  BaconViz.createMarbleChartWithin("svg#marbles")
+  chart = BaconViz.createMarbleChartWithin("svg#marbles")
+
+  $('body')
+    .asEventStream('click')
+    .map( 'you clicked!!!' )
+    .doAction( chart.addNewMarble )
+    .log()
