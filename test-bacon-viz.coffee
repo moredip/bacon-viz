@@ -10,29 +10,19 @@ trackClicks = ->
 
 
 d3Vis = ->
-  n = 243
-  duration = 750
-  now = new Date(Date.now() - duration)
-  #count = 0
-  #data = d3.range(n).map( -> 0 )
+  updateInterval = 70
+  timeRange = 1000 * 60 # 60 seconds
+  now = Date.now()
   
-  data = [ Date.now() - (10*duration), Date.now() - (150*duration) ]
+  data = [ now - 10000, now - 11000 ]
 
   margin = {top: 6, right: 0, bottom: 20, left: 40}
   width = 960 - margin.right
   height = 120 - margin.top - margin.bottom
 
   x = d3.time.scale()
-      .domain([now - (n - 2) * duration, now - duration])
+      .domain([now - timeRange, now])
       .range([0, width])
-
-  y = d3.scale.linear()
-      .range([height, 0])
-
-  #line = d3.svg.line()
-      #.interpolate("basis")
-      #.x( (d, i)-> x(now - (n - 1 - i) * duration) )
-      #.y( (d, i)-> y(d) )
 
   svg = d3.select("svg#marbles")
       .attr("width", width + margin.left + margin.right)
@@ -47,70 +37,51 @@ d3Vis = ->
       .attr("width", width)
       .attr("height", height);
 
-  axis = svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(x.axis = d3.svg.axis().scale(x).orient("bottom"))
+  #axis = svg.append("g")
+      #.attr("class", "x axis")
+      #.attr("transform", "translate(0," + height + ")")
+      #.call(x.axis = d3.svg.axis().scale(x).orient("bottom"))
 
   marbleGroup = svg.append("g")
-      #.attr("clip-path", "url(#clip)")
-    #.append("path")
-      #.data([data])
-      #.attr("class", "line")
-
-  #d3.select(window)
-    #.on("scroll", -> ++count )
 
   tick = ->
-    #// update the domains
     now = new Date()
-    x.domain([now - (n - 2) * duration, now - duration])
-    #y.domain([0, d3.max(data)])
+    x.domain([now - timeRange, now])
 
-    #// push the accumulated count onto the back, and reset the count
-    # data.push(Math.min(30, count))
-    # count = 0;
-
-    #// redraw the line
-    #svg.select(".line")
-        #.attr("d", line)
-        #.attr("transform", null);
-    
-    marbleGroup.attr("transform",null)
-
-    marbles = marbleGroup.selectAll(".marble")
+    marbles = marbleGroup
+      .selectAll(".marble")
       .data(data)
 
     marbles.enter().append("circle")
       .attr("class","marble")
       .attr("r", 20)
+      .attr("cy", height/2)
 
     marbles.exit().remove()
 
     marbles
       .attr("cx", (d)-> x(d) )
-      .attr("cy", y(0))
 
-    #// slide the x-axis left
-    axis.transition()
-        .duration(duration)
-        .ease("linear")
-        .call(x.axis)
+    # slide the x-axis left
+    #axis.transition()
+        #.duration(updateInterval)
+        #.ease("linear")
+        #.call(x.axis)
 
-    #// slide the line left
-    marbleGroup.transition()
-        .duration(duration)
+    # slide the marbles left
+    marbleGroup
+      .attr("transform",null)
+      .transition()
+        .duration(updateInterval)
         .ease("linear")
-        .attr("transform", "translate(" + x(now - (n - 1) * duration) + ")")
+        .attr("transform", "translate(" + x(now - timeRange - updateInterval) + ")")
         .each("end", tick)
-        
-    console.log("translate(" + x(now - (n - 1) * duration) + ")")
-
-    #// pop the old data point off the front
-    #data.shift()
 
   tick()
 
 
 #$(trackClicks)
-$(d3Vis)
+#$(d3Vis)
+
+$ ->
+  BaconViz.createMarbleChartWithin("svg#marbles")
