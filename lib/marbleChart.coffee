@@ -48,27 +48,20 @@ BaconViz.createMarbleChartWithin = (rootSvgNode)->
   width = root.attr("width")
   height = root.attr("height")
   
-  eventData = [ now - 100, now - 400 ]
+  eventData = []
 
   x = d3.time.scale()
       .domain([now - timeRange, now])
       .range([0, width])
 
-
-
   tick = ->
     now = new Date()
     x.domain([now - timeRange, now])
 
+    # re-position marbles
     refreshMarbles({marbleGroup,eventData,x,height})
 
-    # slide the x-axis left
-    #axis.transition()
-        #.duration(updateInterval)
-        #.ease("linear")
-        #.call(x.axis)
-
-    # slide the marbles left
+    # set up a transition to keep everything sliding until the next tick
     marbleGroup
       .attr("transform",null)
       .transition()

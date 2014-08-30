@@ -16,6 +16,4 @@ $ ->
 
   $('body')
     .asEventStream('click')
-    .map( 'you clicked!!!' )
-    .doAction( chart.addNewMarble )
-    .log()
+    .visualizeIn(chart)
