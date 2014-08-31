@@ -2,8 +2,7 @@ svg {
   font: 10px sans-serif;
 }
 
-#marbles .border {
-  fill: #f0f0f0;
+#marbles .marble-line {
   stroke: #aaa;
   stroke-width: 1px;
 }

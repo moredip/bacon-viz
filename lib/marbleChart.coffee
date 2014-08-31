@@ -1,22 +1,23 @@
 BaconViz = this.BaconViz ?= {}
 
+MARBLE_RADIUS = 20
+
 prepRootNode = (rootSvgNode)->
-  margin = {top: 6, right: 40, bottom: 20, left: 40}
-  height = 120 - margin.top - margin.bottom
-  width = 960 - margin.right - margin.left
+  height = 120;
+  width = 960;
 
   root = d3.select(rootSvgNode)
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .style("margin-left", -margin.left + "px")
+      .attr("width", width)
+      .attr("height", height)
 
   container = root.append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
-  container.append('rect')
-    .attr("width", width)
-    .attr("height", height)
-    .attr("class", "border")
+  container.append('line')
+    .attr("x1", 0)
+    .attr("y1", height/2)
+    .attr("x2", width-MARBLE_RADIUS)
+    .attr("y2", height/2)
+    .attr("class", "marble-line")
 
   marbleGroup = container.append("g")
   {root,marbleGroup}
@@ -30,7 +31,7 @@ refreshMarbles = ({marbleGroup,eventData,x,height})->
 
   marbles.enter().append("circle")
     .attr("class","marble")
-    .attr("r", 20)
+    .attr("r", MARBLE_RADIUS)
     .attr("cy", height/2)
 
   marbles.exit().remove()
@@ -52,7 +53,7 @@ BaconViz.createMarbleChartWithin = (rootSvgNode)->
 
   x = d3.time.scale()
       .domain([now - timeRange, now])
-      .range([0, width])
+      .range([0, width-MARBLE_RADIUS])
 
   tick = ->
     now = new Date()
