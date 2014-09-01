@@ -1,21 +1,30 @@
-svg {
-  font: 10px sans-serif;
+html {
+  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 }
 
-#marbles .marble-line {
+svg.marbles .marble-line {
   stroke: #aaa;
   stroke-width: 1px;
 }
  
-#marbles .marble {
+svg.marbles .marble {
   fill: rgb(250, 112, 19);
   stroke: #F50D0D;
   stroke-width: 4px;
 }
- 
-#marbles .axis path,
-#marbles .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+
+article.streams {
+  background: #eee;
+  padding: 20px 0;
+}
+
+.marble-stream {
+  padding: 20px;
+  display: inline-block;
+}
+
+.marble-stream h2 {
+  margin: 0 0 -15px 0;
+  color: #444;
+  font-style: italic;
 }

@@ -3,7 +3,7 @@ BaconViz = this.BaconViz ?= {}
 MARBLE_RADIUS = 20
 
 prepRootNode = (rootSvgNode)->
-  height = 120;
+  height = 60;
   width = 960;
 
   root = d3.select(rootSvgNode)
