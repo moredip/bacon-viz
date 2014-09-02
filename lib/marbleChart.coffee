@@ -1,9 +1,9 @@
 BaconViz = this.BaconViz ?= {}
 
-MARBLE_RADIUS = 20
+MARBLE_RADIUS = 30
 
 prepRootNode = (rootSvgNode)->
-  height = 60;
+  height = (MARBLE_RADIUS * 2) + 14;
   width = 960;
 
   root = d3.select(rootSvgNode)
@@ -25,23 +25,41 @@ prepRootNode = (rootSvgNode)->
 refreshMarbles = ({marbleGroup,eventData,x,height})->
   fadeScale = x.copy().range([0,1])
   colorScale = d3.scale.category10()
+  yCenter = height/2;
 
   marbles = marbleGroup
     .selectAll(".marble")
     .data(eventData)
 
-  marbles.enter().append("circle")
-    .attr("class","marble")
-    .attr("r", MARBLE_RADIUS)
-    .attr("cy", height/2)
+  newMarble = marbles
+    .enter()
+    .append("svg:g")
+      .attr("class","marble")
+
+  newMarble
+    .append("circle")
+      .attr("r", MARBLE_RADIUS)
+
+  newMarble
+    .append("text")
+     .attr("alignment-baseline","middle")
+     .attr("text-anchor","middle")
 
   marbles.exit().remove()
 
   marbles
-    .attr("cx", (d)-> x(d) )
-    .attr("opacity", (d)-> fadeScale(d) )
-    .style("fill", (d,i)-> colorScale(i) )
-    .style("stroke", (d,i)-> d3.rgb(colorScale(i)).darker() )
+    .attr("transform", (d)-> "translate(#{x(d.timestamp)},#{yCenter})")
+    .attr("opacity", (d)-> fadeScale(d.timestamp) )
+
+  marbles.select("circle")
+      .style("fill", (d,i)-> colorScale(i) )
+      .style("stroke", (d,i)-> d3.rgb(colorScale(i)).darker() )
+
+  marbles.select("text")
+    .text( (d)-> d.displayValue )
+
+
+  
 
 BaconViz.createMarbleChartWithin = (rootSvgNode)->
   updateInterval = 50
@@ -76,10 +94,18 @@ BaconViz.createMarbleChartWithin = (rootSvgNode)->
 
   tick()
 
-  addNewMarble = ()->
-    eventTimestamp = new Date()
-    eventData.push(eventTimestamp)
-    #tick()
+  addNewMarble = (baconEvent)->
+    displayValue = try
+        JSON.stringify(baconEvent.value())
+      catch 
+        "-"
+
+    event = {
+      backingEvent: baconEvent
+      displayValue: displayValue
+      timestamp: new Date()
+    }
+    eventData.push(event)
 
   {addNewMarble}
 

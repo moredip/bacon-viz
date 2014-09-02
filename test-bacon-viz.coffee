@@ -1,6 +1,7 @@
 $ ->
   $('body')
     .asEventStream('click')
+    .map("POP!")
     .visualize("all clicks")
 
   mouseMoves = $('body > h1')
