@@ -8,8 +8,6 @@ svg.marbles .marble-line {
 }
  
 svg.marbles .marble {
-  fill: rgb(250, 112, 19);
-  stroke: #F50D0D;
   stroke-width: 4px;
 }
 

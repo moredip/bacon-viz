@@ -23,7 +23,8 @@ prepRootNode = (rootSvgNode)->
   {root,marbleGroup}
 
 refreshMarbles = ({marbleGroup,eventData,x,height})->
-  fade = x.copy().range([0,1])
+  fadeScale = x.copy().range([0,1])
+  colorScale = d3.scale.category10()
 
   marbles = marbleGroup
     .selectAll(".marble")
@@ -38,7 +39,9 @@ refreshMarbles = ({marbleGroup,eventData,x,height})->
 
   marbles
     .attr("cx", (d)-> x(d) )
-    .attr("opacity", (d)-> fade(d) )
+    .attr("opacity", (d)-> fadeScale(d) )
+    .style("fill", (d,i)-> colorScale(i) )
+    .style("stroke", (d,i)-> d3.rgb(colorScale(i)).darker() )
 
 BaconViz.createMarbleChartWithin = (rootSvgNode)->
   updateInterval = 50
