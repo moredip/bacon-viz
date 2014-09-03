@@ -98,7 +98,7 @@ BaconViz.createMarbleChartWithin = (rootSvgNode)->
     displayValue = try
         JSON.stringify(baconEvent.value())
       catch 
-        "-"
+        null
 
     event = {
       backingEvent: baconEvent
