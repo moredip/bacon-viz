@@ -1,1 +1,2 @@
-- remove really old events from data
+- remove really old events from data (big perf issue)
+- category colors diff per stream, not per marble
