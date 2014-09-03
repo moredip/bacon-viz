@@ -2,6 +2,10 @@ html {
   font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 }
 
+svg {
+  font-family: sans-serif;
+}
+
 svg.marbles .marble-line {
   stroke: #aaa;
   stroke-width: 1px;
@@ -9,6 +13,10 @@ svg.marbles .marble-line {
  
 svg.marbles .marble {
   stroke-width: 4px;
+}
+
+svg.marbles .marble text {
+  fill: #eee;
 }
 
 article.streams {
