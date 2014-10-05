@@ -20,7 +20,7 @@ wireUpBasicDemo = ->
 wireUpSlider = ->
   sliderVal = $('.slider-to-label input')
     .asEventStream( 'input', eventToVal )
-    .toProperty( $('.slider-to-label input').val() )
+    #.toProperty( $('.slider-to-label input').val() )
 
 
   throttled = sliderVal

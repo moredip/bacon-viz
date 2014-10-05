@@ -6,6 +6,9 @@ createCurrValueMarbleWithin = (container)->
   marble = container.append("svg:g")
       .attr("class","curr-value marble")
 
+  # hide the marble until it gets its first value
+  marble.style("visibility","hidden")
+
   marble
     .append("circle")
       .attr("r", MARBLE_RADIUS)
@@ -40,8 +43,9 @@ prepRootNode = (root)->
   {marbleGroup,currValueMarble}
 
 refreshCurrValueMarble = (currValueMarble,latestEvent)->
-  currValueMarble.select("text")
-    .text( latestEvent.displayValue )
+  currValueMarble
+    .style("visibility","visible")
+    .select("text").text( latestEvent.displayValue )
 
 
 refreshMarbles = ({marbleGroup,eventData,x,height})->
