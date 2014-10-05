@@ -1,7 +1,7 @@
 BaconViz = this.BaconViz ?= {}
 
 BaconViz.createStreamVisualization = (streamName)->
-  $streamsContainer = $('article.streams')
+  $streamsContainer = $('.streams')
 
   $newStream = $("""
     <section class="marble-stream">
