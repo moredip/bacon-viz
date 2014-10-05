@@ -13,7 +13,7 @@ BaconViz.createStreamVisualization = (streamName)->
   $newStream.appendTo($streamsContainer)
 
   $svg = $newStream.find("svg")
-  chart = BaconViz.createMarbleChartWithin($svg[0])
+  chart = BaconViz.createMarbleChartWithin($svg[0],$newStream.width())
   
 
   {

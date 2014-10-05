@@ -17,13 +17,11 @@ createCurrValueMarbleWithin = (container)->
 
   marble
 
-prepRootNode = (rootSvgNode)->
+prepRootNode = (root)->
   height = (MARBLE_RADIUS * 2) + 14
-  width = 960
 
-  root = d3.select(rootSvgNode)
-      .attr("width", width)
-      .attr("height", height)
+  width = root.attr("width")
+  root.attr("height",height)
 
   container = root.append("g")
 
@@ -39,7 +37,7 @@ prepRootNode = (rootSvgNode)->
 
   marbleGroup = container.append("g")
 
-  {root,marbleGroup,currValueMarble}
+  {marbleGroup,currValueMarble}
 
 refreshCurrValueMarble = (currValueMarble,latestEvent)->
   currValueMarble.select("text")
@@ -85,12 +83,15 @@ refreshMarbles = ({marbleGroup,eventData,x,height})->
 
   
 
-BaconViz.createMarbleChartWithin = (rootSvgNode)->
+BaconViz.createMarbleChartWithin = (rootSvgNode,containerWidth)->
   updateInterval = 50
   timeRange = 1000 * 10 # 10 seconds
   now = new Date()
 
-  {marbleGroup,root,currValueMarble} = prepRootNode(rootSvgNode)
+  root = d3.select(rootSvgNode)
+  root.attr("width",containerWidth - (MARBLE_RADIUS*2))
+
+  {marbleGroup,currValueMarble} = prepRootNode(root)
   width = root.attr("width")
   height = root.attr("height")
   

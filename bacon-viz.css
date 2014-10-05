@@ -35,6 +35,7 @@ article.streams {
 .marble-stream {
   padding: 20px;
   display: inline-block;
+  width: 100%;
 }
 
 .marble-stream h2 {
