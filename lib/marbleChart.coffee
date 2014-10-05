@@ -2,9 +2,24 @@ BaconViz = this.BaconViz ?= {}
 
 MARBLE_RADIUS = 30
 
+createCurrValueMarbleWithin = (container)->
+  marble = container.append("svg:g")
+      .attr("class","curr-value marble")
+
+  marble
+    .append("circle")
+      .attr("r", MARBLE_RADIUS)
+
+  marble
+    .append("text")
+     .attr("alignment-baseline","middle")
+     .attr("text-anchor","middle")
+
+  marble
+
 prepRootNode = (rootSvgNode)->
-  height = (MARBLE_RADIUS * 2) + 14;
-  width = 960;
+  height = (MARBLE_RADIUS * 2) + 14
+  width = 960
 
   root = d3.select(rootSvgNode)
       .attr("width", width)
@@ -19,8 +34,17 @@ prepRootNode = (rootSvgNode)->
     .attr("y2", height/2)
     .attr("class", "marble-line")
 
+  currValueMarble = createCurrValueMarbleWithin(container)
+  currValueMarble.attr("transform", "translate(#{width-MARBLE_RADIUS-5},#{height/2})")
+
   marbleGroup = container.append("g")
-  {root,marbleGroup}
+
+  {root,marbleGroup,currValueMarble}
+
+refreshCurrValueMarble = (currValueMarble,latestEvent)->
+  currValueMarble.select("text")
+    .text( latestEvent.displayValue )
+
 
 refreshMarbles = ({marbleGroup,eventData,x,height})->
   fadeScale = x.copy().range([0,1])
@@ -66,7 +90,7 @@ BaconViz.createMarbleChartWithin = (rootSvgNode)->
   timeRange = 1000 * 10 # 10 seconds
   now = new Date()
 
-  {marbleGroup,root} = prepRootNode(rootSvgNode)
+  {marbleGroup,root,currValueMarble} = prepRootNode(rootSvgNode)
   width = root.attr("width")
   height = root.attr("height")
   
@@ -82,6 +106,10 @@ BaconViz.createMarbleChartWithin = (rootSvgNode)->
 
     # re-position marbles
     refreshMarbles({marbleGroup,eventData,x,height})
+
+    if eventData.length
+      latestEvent = eventData[ eventData.length - 1 ]
+      refreshCurrValueMarble(currValueMarble,latestEvent)
 
     # set up a transition to keep everything sliding until the next tick
     marbleGroup

@@ -18,7 +18,10 @@ wireUpBasicDemo = ->
     .visualize("moves throttled to 1000ms")
 
 wireUpSlider = ->
-  sliderVal = $('.slider-to-label input').asEventStream( 'input', eventToVal )
+  sliderVal = $('.slider-to-label input')
+    .asEventStream( 'input', eventToVal )
+    .toProperty( $('.slider-to-label input').val() )
+
 
   throttled = sliderVal
     .throttle(100)

@@ -16,8 +16,16 @@ svg.marbles .marble {
 }
 
 svg.marbles .marble text {
+  fill: #222;
+  stroke: none;
+}
+
+svg.marbles .curr-value.marble {
+  stroke: #aaa;
   fill: #eee;
 }
+
+
 
 article.streams {
   background: #eee;
