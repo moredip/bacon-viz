@@ -1,6 +1,7 @@
 BaconViz = this.BaconViz ?= {}
 
 MARBLE_RADIUS = 30
+TIME_RANGE_MS = 10 * 1000
 
 createCurrValueMarbleWithin = (container)->
   marble = container.append("svg:g")
@@ -85,11 +86,20 @@ refreshMarbles = ({marbleGroup,eventData,x,height})->
     .text( (d)-> d.displayValue )
 
 
+trimEventData = ({timeRange,now,eventData})->
+  ageLimit = now-timeRange
+
+  trimmedEventData = []
+  for event in eventData
+    if event.timestamp > ageLimit
+      trimmedEventData.push(event)
+
+  trimmedEventData
   
 
 BaconViz.createMarbleChartWithin = (rootSvgNode,containerWidth)->
   updateInterval = 50
-  timeRange = 1000 * 10 # 10 seconds
+  timeRange = TIME_RANGE_MS
   now = new Date()
 
   root = d3.select(rootSvgNode)
@@ -108,6 +118,8 @@ BaconViz.createMarbleChartWithin = (rootSvgNode,containerWidth)->
   tick = ->
     now = new Date()
     x.domain([now - timeRange, now])
+
+    eventData = trimEventData({eventData,timeRange,now})
 
     # re-position marbles
     refreshMarbles({marbleGroup,eventData,x,height})

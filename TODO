@@ -1,3 +1,1 @@
-- remove really old events from data (big perf issue)
 - category colors diff per stream, not per marble
-- show current value for properties as a static marble hanging on the right side
