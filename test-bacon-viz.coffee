@@ -35,6 +35,20 @@ wireUpSlider = ->
     .map (v)-> Number(v.toFixed(1))
     .visualize("... then rounded to 1 decimal place ...")
 
+wireUpColors = ->
+  randomColor = ->
+    tinycolor(
+      h: Math.random() * 360,
+      s: 1
+      l: 0.5
+    ).toString("rgb")
 
-$( wireUpSlider )
+  stream = Bacon
+    .interval(800)
+    .map(randomColor)
+    .log()
+
+  stream.visualize('random colors')
+
+$( wireUpColors )
 

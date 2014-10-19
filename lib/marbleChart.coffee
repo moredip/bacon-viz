@@ -3,6 +3,16 @@ BaconViz = this.BaconViz ?= {}
 MARBLE_RADIUS = 30
 TIME_RANGE_MS = 10 * 1000
 
+RGB_REGEX = /^rgb\([\.\d]+,\s?[\.\d]+,\s?[\.\d]+\)$/
+isColorString = (str)->
+  !!RGB_REGEX.exec(str)
+
+inspect = (val)->
+  try
+    JSON.stringify(val)
+  catch 
+    null
+
 createCurrValueMarbleWithin = (container)->
   marble = container.append("svg:g")
       .attr("class","curr-value marble")
@@ -46,12 +56,14 @@ prepRootNode = (root)->
 refreshCurrValueMarble = (currValueMarble,latestEvent)->
   currValueMarble
     .style("visibility","visible")
-    .select("text").text( latestEvent.displayValue )
+    .select("text").text( latestEvent.displayText )
 
+colorScale = d3.scale.category10()
+colorForData = (d,i)->
+  d3.rgb( if d.displayColor then d.displayColor else colorScale(i) )
 
 refreshMarbles = ({marbleGroup,eventData,x,height})->
   fadeScale = x.copy().range([0,1])
-  colorScale = d3.scale.category10()
   yCenter = height/2;
 
   marbles = marbleGroup
@@ -79,11 +91,11 @@ refreshMarbles = ({marbleGroup,eventData,x,height})->
     .attr("opacity", (d)-> fadeScale(d.timestamp) )
 
   marbles.select("circle")
-      .style("fill", (d,i)-> colorScale(i) )
-      .style("stroke", (d,i)-> d3.rgb(colorScale(i)).darker() )
+      .style("fill", colorForData )
+      .style("stroke", (d,i)-> colorForData(d,i).darker() )
 
   marbles.select("text")
-    .text( (d)-> d.displayValue )
+    .text( (d)-> d.displayText )
 
 
 trimEventData = ({timeRange,now,eventData})->
@@ -140,14 +152,17 @@ BaconViz.createMarbleChartWithin = (rootSvgNode,containerWidth)->
   tick()
 
   addNewMarble = (baconEvent)->
-    displayValue = try
-        JSON.stringify(baconEvent.value())
-      catch 
-        null
+    if isColorString(baconEvent.value()) 
+      displayText = undefined
+      displayColor = baconEvent.value()
+    else
+      displayColor = undefined
+      displayText = inspect(baconEvent.value())
 
     event = {
       backingEvent: baconEvent
-      displayValue: displayValue
+      displayText: displayText
+      displayColor: displayColor
       timestamp: new Date()
     }
     eventData.push(event)
