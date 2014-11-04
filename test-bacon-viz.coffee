@@ -46,9 +46,8 @@ wireUpColors = ->
   stream = Bacon
     .interval(800)
     .map(randomColor)
-    .log()
 
   stream.visualize('random colors')
 
-$( wireUpColors )
+$( wireUpBasicDemo )
 

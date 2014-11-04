@@ -90,9 +90,9 @@ refreshMarbles = ({marbleGroup,eventData,x,height})->
     .attr("transform", (d)-> "translate(#{x(d.timestamp)},#{yCenter})")
     .attr("opacity", (d)-> fadeScale(d.timestamp) )
 
-  marbles.select("circle")
-      .style("fill", colorForData )
-      .style("stroke", (d,i)-> colorForData(d,i).darker() )
+  #marbles.select("circle")
+      #.style("fill", colorForData )
+      #.style("stroke", (d,i)-> colorForData(d,i).darker() )
 
   marbles.select("text")
     .text( (d)-> d.displayText )
