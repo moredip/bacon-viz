@@ -43,11 +43,14 @@ wireUpColors = ->
       l: 0.5
     ).toString("rgb")
 
-  stream = Bacon
+  Bacon
+    .interval(400)
+    .visualize('random schtuff')
+
+  Bacon
     .interval(800)
     .map(randomColor)
+    .visualize('random colors')
 
-  stream.visualize('random colors')
-
-$( wireUpBasicDemo )
+$( wireUpColors )
 

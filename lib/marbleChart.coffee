@@ -58,9 +58,19 @@ refreshCurrValueMarble = (currValueMarble,latestEvent)->
     .style("visibility","visible")
     .select("text").text( latestEvent.displayText )
 
-colorScale = d3.scale.category10()
-colorForData = (d,i)->
-  d3.rgb( if d.displayColor then d.displayColor else colorScale(i) )
+colorForData = (d)->
+  if d.displayColor
+    d3.rgb(d.displayColor)
+  else
+    undefined
+
+darkerColorForData = (d)->
+  color = colorForData(d)
+  if color
+    color.darker()
+  else
+    color
+
 
 refreshMarbles = ({marbleGroup,eventData,x,height})->
   fadeScale = x.copy().range([0,1])
@@ -90,9 +100,9 @@ refreshMarbles = ({marbleGroup,eventData,x,height})->
     .attr("transform", (d)-> "translate(#{x(d.timestamp)},#{yCenter})")
     .attr("opacity", (d)-> fadeScale(d.timestamp) )
 
-  #marbles.select("circle")
-      #.style("fill", colorForData )
-      #.style("stroke", (d,i)-> colorForData(d,i).darker() )
+  marbles.select("circle")
+      .style("fill", colorForData )
+      .style("stroke", darkerColorForData )
 
   marbles.select("text")
     .text( (d)-> d.displayText )
